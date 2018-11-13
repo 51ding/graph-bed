@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+            <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+                <title>
+                    七牛云配置
+                </title>
+            </link>
+        </meta>
+    </head>
+    <body>
+        <div class="container">
+            <h3>
+                七牛云设置
+            </h3>
+            <form>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">
+                        AccessKey
+                    </label>
+                    <input class="form-control" id="accessKey " placeholder="AccessKey" type="text">
+                    </input>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">
+                        secretKey
+                    </label>
+                    <input class="form-control" id="secretKey" placeholder="SecretKey" type="text">
+                    </input>
+                </div>
+                <label for="exampleInputPassword1">
+                    外链域名
+                </label>
+                <input class="form-control" id="domain" placeholder="外链域名" type="text">
+                </input>
+                <button class="btn btn-primary" style="margin-top:15px;" type="submit">
+                    保存
+                </button>
+            </form>
+        </div>
+        <script type="text/javascript">
+        	const electron =require("electron");
+        	const {ipcRenderer}=electron;
+        	var form =document.querySelector("form");
+        	form.addEventListener("submit",function(){
+        		var config={};
+        		config.accessKey=document.querySelector("#accessKey").value;
+        		config.secretKey=document.querySelector("#secretKey").value;
+        		config.domain=document.querySelector("#domain").value;
+        		ipcRenderer.send("setQiniu",config);
+        	})
+
+
+        </script>
+    </body>
+</html>
