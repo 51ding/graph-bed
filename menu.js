@@ -8,13 +8,14 @@ let menuTemplate = [{}, {
     label: "配置",
     submenu: [{
         label: "七牛云",
-        click() {
+        click(menuitm,win) {
             if (!qiniuWindow) {
                 qiniuWindow = new BrowserWindow({
                     width: 450,
                     height: 400,
-                    minimizable: false,
-                    maximizable: false
+                    parent:win
+                    // minimizable: false,
+                    // maximizable: false
                 });
                 qiniuWindow.loadFile("qiniu.html");
                 //qiniuWindow.setMenu(null);

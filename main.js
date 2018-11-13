@@ -1,5 +1,7 @@
 var electron = require("electron");
 var MainMenu = require("./menu");
+var EventListener =require("./event");
+var Config=require("./config");
 /*设置环境变量*/
 process.env.NODE_ENV = "development";
 var {
@@ -13,6 +15,8 @@ app.on("ready", function() {
     mainWindow.loadFile("index.html");
     shortCut();
     new MainMenu().create();
+    Config.getInstance();
+    EventListener();
     mainWindow.on("closed",()=>{
     	app.quit();
     })

@@ -19,7 +19,7 @@
                     <label for="exampleInputEmail1">
                         AccessKey
                     </label>
-                    <input class="form-control" id="accessKey " placeholder="AccessKey" type="text">
+                    <input class="form-control" id="accessKey" placeholder="AccessKey" type="text">
                     </input>
                 </div>
                 <div class="form-group">
@@ -34,24 +34,33 @@
                 </label>
                 <input class="form-control" id="domain" placeholder="外链域名" type="text">
                 </input>
-                <button class="btn btn-primary" style="margin-top:15px;" type="submit">
+                <button class="btn btn-primary" id="submit" style="margin-top:15px;" type="button">
                     保存
                 </button>
             </form>
         </div>
         <script type="text/javascript">
-        	const electron =require("electron");
-        	const {ipcRenderer}=electron;
-        	var form =document.querySelector("form");
-        	form.addEventListener("submit",function(){
-        		var config={};
-        		config.accessKey=document.querySelector("#accessKey").value;
-        		config.secretKey=document.querySelector("#secretKey").value;
-        		config.domain=document.querySelector("#domain").value;
-        		ipcRenderer.send("setQiniu",config);
-        	})
+            window.onload=function(){
+                ipcRenderer.send("getQiniu");
 
+                ipcRenderer.on("getQiniu",function(e,data){
+                    document.querySelector("#accessKey").value=data.accessKey;
+                    document.querySelector("#secretKey").value=data.secretKey;
+                    document.querySelector("#domain").value=data.domain;
+                })
 
+            }
+            const electron =require("electron");
+            const {ipcRenderer}=electron;
+            var button =document.querySelector("#submit");
+            button.addEventListener("click",function(){
+                console.log("123");
+                var config={};
+                config.accessKey=document.querySelector("#accessKey").value;
+                config.secretKey=document.querySelector("#secretKey").value;
+                config.domain=document.querySelector("#domain").value;
+                ipcRenderer.send("setQiniu",config);
+            })
         </script>
     </body>
 </html>
