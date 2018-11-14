@@ -16,6 +16,13 @@
             </h3>
             <form>
                 <div class="form-group">
+                    <label for="exampleInputPassword1">
+                        空间名称
+                    </label>
+                    <input class="form-control" id="bucket" placeholder="空间名称" type="text">
+                    </input>
+                </div>
+                <div class="form-group">
                     <label for="exampleInputEmail1">
                         AccessKey
                     </label>
@@ -34,6 +41,42 @@
                 </label>
                 <input class="form-control" id="domain" placeholder="外链域名" type="text">
                 </input>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">
+                        机房
+                    </label>
+                    <div class="dropdown">
+                        <button aria-expanded="true" aria-haspopup="true" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="dropdownMenu1" type="button">
+                            Dropdown
+                            <span class="caret">
+                            </span>
+                        </button>
+                        <ul aria-labelledby="dropdownMenu1" class="dropdown-menu">
+                            <li>
+                                <a href="#">
+                                    Action
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Another action
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Something else here
+                                </a>
+                            </li>
+                            <li class="divider" role="separator">
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Separated link
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <button class="btn btn-primary" id="submit" style="margin-top:15px;" type="button">
                     保存
                 </button>
@@ -47,6 +90,7 @@
                     document.querySelector("#accessKey").value=data.accessKey;
                     document.querySelector("#secretKey").value=data.secretKey;
                     document.querySelector("#domain").value=data.domain;
+                    document.querySelector("#bucket").value=data.bucket;
                 })
 
             }
@@ -59,6 +103,7 @@
                 config.accessKey=document.querySelector("#accessKey").value;
                 config.secretKey=document.querySelector("#secretKey").value;
                 config.domain=document.querySelector("#domain").value;
+                config.bucket =document.querySelector("#bucket").value;
                 ipcRenderer.send("setQiniu",config);
             })
         </script>

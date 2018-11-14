@@ -1,7 +1,9 @@
 var electron = require("electron");
 var MainMenu = require("./menu");
-var EventListener =require("./event");
-var Config=require("./config");
+var EventListener = require("./event");
+var Config = require("./config");
+var ShortCut=require("./shortcut");
+var MessageBox =require("./message");
 /*设置环境变量*/
 process.env.NODE_ENV = "development";
 var {
@@ -11,20 +13,21 @@ var {
 } = electron;
 let mainWindow;
 app.on("ready", function() {
-    mainWindow = new BrowserWindow();
-    mainWindow.loadFile("index.html");
-    shortCut();
+    createMainWindow();
+    ShortCut();
     new MainMenu().create();
     Config.getInstance();
     EventListener();
-    mainWindow.on("closed",()=>{
-    	app.quit();
-    })
 })
 
-
-function shortCut() {
-    globalShortcut.register("Ctrl+Alt+I", function() {
-        console.log("x");
+function createMainWindow() {
+    mainWindow = new BrowserWindow();
+    mainWindow.loadFile("index.html");
+    mainWindow.on("closed", () => {
+        app.quit();
     })
 }
+
+process.on('uncaughtException', (err) => {
+  MessageBox.show(err.message);
+});

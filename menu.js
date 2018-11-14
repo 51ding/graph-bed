@@ -12,7 +12,7 @@ let menuTemplate = [{}, {
             if (!qiniuWindow) {
                 qiniuWindow = new BrowserWindow({
                     width: 450,
-                    height: 400,
+                    height: 450,
                     parent:win
                     // minimizable: false,
                     // maximizable: false

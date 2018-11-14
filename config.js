@@ -4,6 +4,7 @@ var {
 } = require("electron");
 
 const CONFIG_FILE_NAME = "config.json";
+
 class Config {
     constructor() {
         this.load();
