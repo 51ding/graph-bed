@@ -4,7 +4,7 @@ var {
 var MessageBox = require("../message");
 /*上传文件基类*/
 function UploadBase() {}
-/*上传*/
+/*获取剪贴板中buffer数据*/
 UploadBase.prototype.getImageBuffer = function() {
     var image = clipboard.readImage();
     if (image.isEmpty()) {
