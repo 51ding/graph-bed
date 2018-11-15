@@ -45,52 +45,40 @@
                     <label for="exampleInputEmail1">
                         机房
                     </label>
-                    <div class="dropdown">
-                        <button aria-expanded="true" aria-haspopup="true" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="dropdownMenu1" type="button">
-                            Dropdown
-                            <span class="caret">
-                            </span>
-                        </button>
-                        <ul aria-labelledby="dropdownMenu1" class="dropdown-menu">
-                            <li>
-                                <a href="#">
-                                    Action
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Another action
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Something else here
-                                </a>
-                            </li>
-                            <li class="divider" role="separator">
-                            </li>
-                            <li>
-                                <a href="#">
-                                    Separated link
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    <select class="form-control" id="zone">
+                        <option value="10">
+                            华东
+                        </option>
+                        <option value="20">
+                            华北
+                        </option>
+                        <option value="30">
+                            华南
+                        </option>
+                        <option value="40">
+                            北美
+                        </option>
+                    </select>
                 </div>
                 <button class="btn btn-primary" id="submit" style="margin-top:15px;" type="button">
                     保存
                 </button>
             </form>
         </div>
+        <script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.js">
+        </script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/js/bootstrap.min.js">
+        </script>
         <script type="text/javascript">
+            var fields=["accessKey","secretKey","domain","bucket","zone"];
+
             window.onload=function(){
                 ipcRenderer.send("getQiniu");
 
                 ipcRenderer.on("getQiniu",function(e,data){
-                    document.querySelector("#accessKey").value=data.accessKey;
-                    document.querySelector("#secretKey").value=data.secretKey;
-                    document.querySelector("#domain").value=data.domain;
-                    document.querySelector("#bucket").value=data.bucket;
+                    ["accessKey","secretKey","domain","bucket","zone"].forEach(function(field){
+                        document.querySelector("#"+field).value=data[field];
+                    })
                 })
 
             }
@@ -98,12 +86,10 @@
             const {ipcRenderer}=electron;
             var button =document.querySelector("#submit");
             button.addEventListener("click",function(){
-                console.log("123");
                 var config={};
-                config.accessKey=document.querySelector("#accessKey").value;
-                config.secretKey=document.querySelector("#secretKey").value;
-                config.domain=document.querySelector("#domain").value;
-                config.bucket =document.querySelector("#bucket").value;
+                fields.forEach(function(field){
+                    config[field]=document.querySelector("#"+field).value;
+                })
                 ipcRenderer.send("setQiniu",config);
             })
         </script>

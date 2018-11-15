@@ -2,14 +2,22 @@ var qiniu = require("qiniu");
 var Config = require("../config");
 var UploadBase = require("./uploadBase");
 var util = require("util");
+var {clipboard}=require("electron");
+var MessageBox=require("../message");
+const ZONE={
+    10:"Zone_z0",
+    20:"Zone_z1",
+    30:"Zone_z2",
+    40:"Zone_na0"
+};
 
 function QiNiu() {
     this.config = Config.getInstance().get("qiniu");
-    console.log(this.config);
     this.accessKey = this.config.accessKey;
     this.secretKey = this.config.secretKey;
     this.domain = this.config.domain;
     this.bucket = this.config.bucket;
+    this.zone =ZONE[this.config.zone];
 }
 QiNiu.prototype.upload = function() {
     var mac = new qiniu.auth.digest.Mac(this.accessKey, this.secretKey);
@@ -21,7 +29,8 @@ QiNiu.prototype.upload = function() {
     var uploadToken = putPolicy.uploadToken(mac);
     var config = new qiniu.conf.Config();
     // 空间对应的机房
-    config.zone = qiniu.zone.Zone_z0;
+    console.log(this.zone);
+    config.zone = qiniu.zone[this.zone];
     // var localFile = "./index.png";
     // var stream = fs.createReadStream(localFile);
     var formUploader = new qiniu.form_up.FormUploader(config);
@@ -34,13 +43,15 @@ QiNiu.prototype.upload = function() {
             throw respErr;
         }
         if (respInfo.statusCode == 200) {
-            console.log(respBody);
+            var imageUrl=`http://${this.domain}/${respBody.key}`;
+            clipboard.writeText(`![](${imageUrl})`);
+            MessageBox.show("图片上传成功，markdown的地址已经在剪贴板！");
         } else {
             console.log(respInfo.statusCode);
             console.log(respBody);
             throw new Error(`${respBody.error},请检查bucket，accessKey，secretKey是否填写正确！`);
         }
-    });
+    }.bind(this));
 }
 util.inherits(QiNiu, UploadBase);
 
