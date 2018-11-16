@@ -1,0 +1,1 @@
+var oss=require("oss");
